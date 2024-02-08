@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DATABASE: ${APP_DB_DATABASE}
+      POSTGRES_USER: ${APP_DB_USERNAME}
+      POSTGRES_PASSWORD: ${APP_DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    networks:
+      - course-networks
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    ports:
+    - '8085:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${APP_PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${APP_PGADMIN_PASSWORD}
+    networks:
+      - course-networks
+    depends_on:
+      - db
+
+
+networks:
+  course-networks:
+    driver: bridge
