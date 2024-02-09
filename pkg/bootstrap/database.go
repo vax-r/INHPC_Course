@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"fmt"
 	"log"
+	"main/pkg/model"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
@@ -49,6 +50,12 @@ func NewDB(env *Env) *gorm.DB {
 	if err := sqlDB.Ping(); err != nil {
 		log.Fatalf("Failed to ping database: %v", err)
 	}
+
+	if err := db.AutoMigrate(&model.User{}); err != nil {
+		log.Fatalf("Failed to migrate database: %v", err)
+	}
+
+	log.Printf("Database setup completed!")
 
 	return db
 }

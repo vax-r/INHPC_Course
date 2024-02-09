@@ -2,6 +2,8 @@ package main
 
 import (
 	"main/pkg/bootstrap"
+	"main/pkg/router"
+	"main/pkg/service"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -23,13 +25,18 @@ func main() {
 	app := bootstrap.App()
 
 	// Init service
+	userService := service.NewUserService(app.Conn)
+
+	services := &router.Services{
+		UserService: userService,
+	}
 
 	// Init router
+	router.RegisterRoutes(app, services)
 
-	server := gin.Default()
-	server.LoadHTMLGlob("./pkg/main/template/html/*")
-	server.GET("/", test)
-	server.Run(":8888")
-
-	_ = app
+	app.Run()
+	// server := gin.Default()
+	// server.LoadHTMLGlob("./pkg/main/template/html/*")
+	// server.GET("/", test)
+	// server.Run(":8888")
 }
