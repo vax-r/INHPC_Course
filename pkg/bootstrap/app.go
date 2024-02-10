@@ -29,6 +29,7 @@ func App() *Application {
 	tz, err := time.LoadLocation(env.Server.TimeZone)
 	if err != nil {
 		log.Fatal(err)
+		panic(err)
 	}
 	time.Local = tz
 
@@ -61,6 +62,7 @@ func (app *Application) Run() {
 	select {
 	case err := <-serverErrors:
 		log.Fatalf("Error starting server: %v", err)
+		panic(err)
 
 	case <-shutdown:
 		log.Println("Shutting down the server...")

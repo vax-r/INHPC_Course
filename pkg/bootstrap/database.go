@@ -40,19 +40,28 @@ func NewDB(env *Env) *gorm.DB {
 	db, err := gorm.Open(env.DB.Dialect(env.DB.Kind), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
+		panic(err)
 	}
 
 	sqlDB, err := db.DB()
 	if err != nil {
 		log.Fatalf("Failed to get database handle: %v", err)
+		panic(err)
 	}
 
 	if err := sqlDB.Ping(); err != nil {
 		log.Fatalf("Failed to ping database: %v", err)
+		panic(err)
 	}
 
-	if err := db.AutoMigrate(&model.User{}); err != nil {
+	err = db.AutoMigrate(
+		&model.User{},
+		&model.Course{},
+		&model.CourseDetail{},
+	)
+	if err != nil {
 		log.Fatalf("Failed to migrate database: %v", err)
+		panic(err)
 	}
 
 	log.Printf("Database setup completed!")

@@ -17,6 +17,7 @@ func NewEnv() *Env {
 
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Error loading .env file")
+		panic(err)
 	}
 
 	var e Env
@@ -25,6 +26,7 @@ func NewEnv() *Env {
 		Prefix:          "APP_",
 	}); err != nil {
 		log.Fatal(err)
+		panic(err)
 	}
 	return &e
 }
