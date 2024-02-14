@@ -26,9 +26,11 @@ func main() {
 
 	// Init service
 	userService := service.NewUserService(app.Conn)
+	courseService := service.NewCourseService(app.Conn)
 
 	services := &router.Services{
-		UserService: userService,
+		UserService:   userService,
+		CourseService: courseService,
 	}
 
 	// Init router

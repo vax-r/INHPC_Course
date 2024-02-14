@@ -7,11 +7,15 @@ import (
 )
 
 type Services struct {
-	UserService model.UserService
+	UserService   model.UserService
+	CourseService model.CourseService
 }
 
 func RegisterRoutes(app *bootstrap.Application, services *Services) {
 
 	userController := controller.NewUserController(services.UserService, app.Env)
 	RegisterUserRoutes(app, userController)
+
+	CourseController := controller.NewCourseController(services.CourseService, app.Env)
+	RegisterCourseRoutes(app, CourseController)
 }
